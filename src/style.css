@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+}
+
+.upload-button {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.upload-input {
+  display: none;
+}
