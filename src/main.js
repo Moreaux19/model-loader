@@ -4,6 +4,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const uploadButton = document.querySelector('.upload-button');
 const uploadInput = document.querySelector('.upload-input');
+const modalWindow = document.querySelector('.modal-window');
+const modalWindowClose = document.querySelector('.modal-window-close');
+let model;
 
 // Обработчик нажатия на кнопку
 uploadButton.addEventListener('click', () => {
@@ -47,7 +50,8 @@ function modelLoader() {
       // Загружаем(парсим из массива байтов в 3D) модель и добавляем в сцену
       const loader = new GLTFLoader();
       loader.parse(arrayBuffer, '', gltf => {
-        scene.add(gltf.scene);
+        model = gltf;
+        scene.add(model.scene);
       });
     };
     // Прочтение файла
@@ -55,17 +59,66 @@ function modelLoader() {
   });
 }
 
-// Функция анимации
+// Функция рендера и управления моделью
 function renderModel() {
-  // Отрисвка модели
+  // Отрисовка модели
   requestAnimationFrame(renderModel);
 
   // Обновляем управление камерой
   controls.update();
+
   // Загрузка модели
   renderer.render(scene, camera);
 }
 renderModel();
 
-// Инициализируем загрузчик
-window.onload = modelLoader;
+// Функция открытия модального окна
+const openModal = () => {
+  modalWindow.style.display = 'flex';
+};
+
+// Функция закрытия модального окна
+const closeModal = () => {
+  modalWindow.style.display = 'none';
+};
+
+// Обработчик клика на модель
+const handleModelClick = () => {
+  openModal();
+};
+
+// Обработчик закрытия модального окна
+modalWindowClose.addEventListener('click', closeModal);
+
+// Проверяем загружена ли модель
+if (model) {
+  //Обходим все дочерние элементы модели
+  model.traverse(item => {
+    item.cursor = 'pointer';
+    // Вешаем на каждый дочерний элемент обработчик
+    item.onClick = handleModelClick;
+  });
+}
+
+// Луч отслеживающий направление от камеры до мыши
+const raycaster = new THREE.Raycaster();
+// Вектор хранящий координаты мыши
+const mouse = new THREE.Vector2();
+
+window.addEventListener('click', event => {
+  // Нормализуем координаты мыши для луча
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Устанавливаем лучу координаты клика и изначальную позицию(камеру)
+  raycaster.setFromCamera(mouse, camera);
+
+  // Создаём массив пересечений луча с моделью(включая дочерние объекты)
+  const intersections = raycaster.intersectObjects(scene.children, true);
+  // Проверяем было ли пересечение луча с моделью и открываем модальное окно
+  if (intersections.length > 0) {
+    handleModelClick();
+  }
+});
+
+modelLoader();
