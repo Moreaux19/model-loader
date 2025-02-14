@@ -12,10 +12,47 @@
     <button class="upload-button">Загрузить модель</button>
     <input type="file" class="upload-input" accept=".glb" />
     <div class="modal-window">
-      <div class="modal-window-content">
-        <span class="modal-window-close">&times;</span>
-        <h2>3D Модель</h2>
-        <p>Информация о модели или другие данные</p>
+      <div class="modal-window-container">
+        <div class="modal-window-close"></div>
+        <h2 class="modal-title">12МК-3-5</h2>
+        <h4 class="modal-sub-title">Кран шаровой с пневмоприводом фланцевый</h4>
+        <button class="change-color-button">Поменять материал</button>
+        <div class="modal-dropdown">
+          <button class="dropdown-button">
+            <p class="dropdown-title">Основные свойства</p>
+            <div class="dropdown-arrow"></div>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-element" value="diameter">
+              <span class="dropdown-element-pretext">Диаметр:</span
+              ><span class="dropdown-element-aftertext">80 мм</span>
+            </li>
+            <li class="dropdown-element" value="pressure">
+              <span class="dropdown-element-pretext">Давление:</span>
+              <span class="dropdown-element-aftertext">10,0 МПа</span>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-dropdown">
+          <button class="dropdown-button">
+            <p class="dropdown-title">Координаты</p>
+            <div class="dropdown-arrow"></div>
+          </button>
+          <ul class="dropdown-menu">
+            <li class="dropdown-element" value="x">
+              <span class="dropdown-element-pretext">x</span
+              ><span class="dropdown-element-aftertext">1</span>
+            </li>
+            <li class="dropdown-element" value="y">
+              <span class="dropdown-element-pretext">y</span>
+              <span class="dropdown-element-aftertext">2</span>
+            </li>
+            <li class="dropdown-element" value="z">
+              <span class="dropdown-element-pretext">z</span>
+              <span class="dropdown-element-aftertext">3</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </body>
